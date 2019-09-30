@@ -1,11 +1,13 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <ostream>
+#include <fstream>
 
 using namespace std;
-int main(int argc, char * argv[])
-{
-    int n = atoi(argv[1]);
+int getdata(int n){
+    std::ofstream file("data.txt");
+    //int n = atoi(argv[1]);
     if (n < 3) n = 3;
     int ** a = new int * [n];
     for(int k = 0; k < n; ++k)
@@ -49,18 +51,18 @@ int main(int argc, char * argv[])
             throw "inconsistency error";
     }
 
-    cout << n << endl;
+    //cout << n << endl;
     for(int i = 0; i < n; ++i)
     {
         for (int j = 0; j < n; ++j)
-            cout << a[i][j] << " ";
-        cout << endl;
+            file << a[i][j] << " ";
+        file << endl;
     }
 
-	cout << endl;
+	 file << endl;
 	for (int k = 0; k < n; ++k)
-		cout << b[k] << " ";
-	cout << endl;
+		file << b[k] << " ";
+	file << endl;
 
     delete [] b;
     for(int k = 0; k < n; ++k)
