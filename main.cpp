@@ -8,7 +8,7 @@ class graph{
 public:
     graph(int dimention){
         this->x = dimention;
-        //getdata(x);
+        getdata(x);
         std::cout << "DIMENSION " << x << std::endl;
 
         std::stringstream row;
@@ -87,11 +87,15 @@ public:
         queue<int> stack;
         stack.push(startNode);
         cost[startNode] = 0;
+        int totalCost = 0;
+        int hops = 0;
+        int nodesPopped = 0;
 
         while(!stack.empty()){
             int current = stack.front();
             //int current = stack.front();
             stack.pop();
+            nodesPopped++;
 
             if (current != targetNode){
                 for(int i =0;i<x;i++){
@@ -99,6 +103,7 @@ public:
                     if(data[i][current] > 0){
                         if(cost[i] > (cost[current] + data[i][current])){
                             cost[i] = (cost[current] + data[i][current]);
+                            totalCost += data[i][current];
                             parent[i] = current;
                             stack.push(i);
                         }
@@ -116,6 +121,7 @@ public:
         {
             finalPath.push(parent[index]);
             index = parent[index];
+            hops++;
         }
 
         // Print path
@@ -127,6 +133,10 @@ public:
             finalPath.pop();
         }
 
+        std::cout << std::endl;
+        std::cout << "Total hops " << hops << std::endl;
+        std::cout << "Total nodes popped " << nodesPopped << std::endl;
+        std::cout << "Total cost " << totalCost << std::endl;
 
 
     }
@@ -143,13 +153,15 @@ public:
 
 private:
     int x;
-    int data[13][13];
+    int data[25][25];
 
 };
 
+
+
 int main(){
     int dim;
-    int search =7;
+    int search =24;
     std::cout << "Enter Dimension: ";
     std::cin >> dim;
     graph g(dim);
@@ -157,8 +169,8 @@ int main(){
     //std::cin >> search;
 
     g.displayGraph();
-    g.DFS(11,search);
-    g.BFS(11,search);
+    //g.DFS(11,search);
+    g.BFS(7,search);
 
 
 }
