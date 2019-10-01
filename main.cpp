@@ -8,7 +8,14 @@ class graph{
 public:
     graph(int dimention){
         this->x = dimention;
-        getdata(x);
+        //getdata(x);
+
+        data = new int*[x];
+
+        for(int i = 0; i < x; ++i) {
+            data[i] = new int[x];
+        }
+
         std::cout << "DIMENSION " << x << std::endl;
 
         std::stringstream row;
@@ -18,6 +25,13 @@ public:
                 file >> data[j][i];
             }
         }
+    }
+
+    ~graph(){
+        for(int i = 0; i < x; ++i) {
+            delete [] data[i];
+        }
+        delete [] data;
     }
 
     void displayGraph(){
@@ -103,7 +117,6 @@ public:
                     if(data[i][current] > 0){
                         if(cost[i] > (cost[current] + data[i][current])){
                             cost[i] = (cost[current] + data[i][current]);
-                            totalCost += data[i][current];
                             parent[i] = current;
                             stack.push(i);
                         }
@@ -114,13 +127,15 @@ public:
 
         //display final
         std::stack<int> finalPath;
-        vector<int> myList;
         finalPath.push(targetNode);
         int index = targetNode;
         while (index != startNode)
         {
+            totalCost += data[parent[index]][index];
             finalPath.push(parent[index]);
             index = parent[index];
+            //totalCost += cost[index];
+
             hops++;
         }
 
@@ -153,7 +168,8 @@ public:
 
 private:
     int x;
-    int data[25][25];
+    //int data[25][25];
+    int** data;
 
 };
 
@@ -161,7 +177,7 @@ private:
 
 int main(){
     int dim;
-    int search =24;
+    int search =2;
     std::cout << "Enter Dimension: ";
     std::cin >> dim;
     graph g(dim);
@@ -170,7 +186,7 @@ int main(){
 
     g.displayGraph();
     //g.DFS(11,search);
-    g.BFS(7,search);
+    g.BFS(10,search);
 
 
 }
