@@ -5,13 +5,11 @@
 #include "gengraph.h"
 class graph{
 public:
-    graph(int x){
-        getdata(x);
-        x = 10;
+    graph(int dimention){
+        this->x = dimention;
+        //getdata(x);
         std::cout << "DIMENSION " << x << std::endl;
 
-        //int visited[];
-        stack<int> s;
         std::stringstream row;
         std:: ifstream file("data.txt");
         for(int i=0;i<x;i++){
@@ -30,14 +28,55 @@ public:
             std::cout << std::endl;
         }
     }
+
+    void DFS(int startNode,int targetNode){
+        vector<int> parent;
+        vector<int> cost = {99,99,99,99,99};
+        stack<int> stack;
+        stack.push(startNode);
+        cost[startNode] = 0;
+
+        while(!stack.empty()){
+            for(int i=0;i<stack.size();i++){
+                std::cout << stack.top() << " ";
+            } std::cout <<" test" << std::endl;
+
+            int current = stack.top();
+            stack.pop();
+
+            if (current != targetNode){
+                for(int i =0;i<x;i++){
+                    if(data[i][current] > 0){
+                        if(cost[i] > (cost[current] + cost[i])){
+                            cost[i] = (cost[current] + cost[i]);
+                            parent[i] = current;
+                            stack.push(i);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void displayRow(){
+            for(int j=0;j<x;j++){
+                std::cout << data[j][0] << " ";
+                //std::cout << "test " << std::endl;
+            }
+            std::cout << std::endl;
+        }
+
+
+
 private:
     int x;
-    int data[50][50];
+    int data[5][5];
 
 };
 
 int main(){
-
     graph g(5);
-   g.displayGraph();
+    g.displayGraph();
+    g.DFS(0,4);
+
 }
