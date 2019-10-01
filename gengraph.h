@@ -60,8 +60,9 @@ int getdata(int n){
     }
 
 	 file << endl;
+
 	for (int k = 0; k < n; ++k)
-		file << b[k] << " ";
+		//file << b[k] << " ";
 	file << endl;
 
     delete [] b;

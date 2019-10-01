@@ -8,7 +8,7 @@ class graph{
 public:
     graph(int dimention){
         this->x = dimention;
-        getdata(x);
+        //getdata(x);
         std::cout << "DIMENSION " << x << std::endl;
 
         std::stringstream row;
@@ -30,26 +30,24 @@ public:
         }
     }
 
-    void DFS(int startNode,int targetNode){
-        vector<int> parent(99, 10);
-        vector<int> cost = {99,99,99,99,99,99,99,99,99,99};
-        //stack<int> stack;
-        queue<int> stack;
+    void DFS(const int startNode,const int targetNode){
+        vector<int> parent(x, 99999999);
+        vector<int> cost(x, 999999999);
+        stack<int> stack;
+        //queue<int> stack;
         stack.push(startNode);
         cost[startNode] = 0;
 
         while(!stack.empty()){
-            std::cout <<"+++ cost array +++" << std::endl;
-            for(int i=0;i<cost.size();i++){
-                std::cout << cost[i] << " ";
-            } std::cout << std::endl << "+++++++++++++++++"<<  std::endl;
+
 
             int current = stack.top();
+            //int current = stack.front();
             stack.pop();
 
             if (current != targetNode){
                 for(int i =0;i<x;i++){
-                    std::cout << data[i][current] << std::endl;
+                    //std::cout << data[i][current] << std::endl;
                     if(data[i][current] > 0){
                         if(cost[i] > (cost[current] + data[i][current])){
                             cost[i] = (cost[current] + data[i][current]);
@@ -60,8 +58,10 @@ public:
                 }
             }
         }
+
         //display final
-        std::stack<uint32_t> finalPath;
+        std::stack<int> finalPath;
+        vector<int> myList;
         finalPath.push(targetNode);
         int index = targetNode;
         while (index != startNode)
@@ -70,22 +70,26 @@ public:
             index = parent[index];
         }
 
-// Print path
+        // Print path
         std::cout << "Optimal Path: ";
         while (!finalPath.empty())
         {
             std::cout << finalPath.top() << " ";
+            //myList.push_back(finalPath.top());
             finalPath.pop();
         }
 
-
+        std::cout << std::endl << "from my list" << std::endl;
+        for(int i=0;i<myList.size();i++){
+            std::cout << myList[i] << " ";
+        }
 
 
     }
 
-    void displayRow(){
+    void displayRow(int row){
             for(int j=0;j<x;j++){
-                std::cout << data[j][0] << " ";
+                std::cout << data[j][row] << " ";
                 //std::cout << "test " << std::endl;
             }
             std::cout << std::endl;
@@ -95,13 +99,20 @@ public:
 
 private:
     int x;
-    int data[10][10];
+    int data[27][27];
 
 };
 
 int main(){
-    graph g(10);
+    int dim;
+    int search;
+    std::cout << "Enter Dimension: ";
+    std::cin >> dim;
+    graph g(dim);
+    std::cout << "Enter Destination: ";
+    std::cin >> search;
     g.displayGraph();
-    g.DFS(0,9);
+    g.DFS(15,search);
+
 
 }
