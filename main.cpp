@@ -6,9 +6,9 @@
 #include "gengraph.h"
 class graph{
 public:
-    graph(int dimention){
+    explicit graph(int dimention){
         this->x = dimention;
-        //getdata(x);
+        getdata(x);
 
         data = new int*[x];
 
@@ -51,6 +51,9 @@ public:
         //queue<int> stack;
         stack.push(startNode);
         cost[startNode] = 0;
+        int totalCost = 0;
+        int hops = 0;
+        int nodesPopped = 0;
 
         while(!stack.empty()){
 
@@ -58,6 +61,7 @@ public:
             int current = stack.top();
             //int current = stack.front();
             stack.pop();
+            nodesPopped++;
 
             if (current != targetNode){
                 for(int i =0;i<x;i++){
@@ -75,11 +79,11 @@ public:
 
         //display final
         std::stack<int> finalPath;
-        vector<int> myList;
         finalPath.push(targetNode);
         int index = targetNode;
         while (index != startNode)
         {
+            //totalCost += data[parent[index]][index];
             finalPath.push(parent[index]);
             index = parent[index];
         }
@@ -89,9 +93,14 @@ public:
         while (!finalPath.empty())
         {
             std::cout << finalPath.top() << " ";
-            //myList.push_back(finalPath.top());
             finalPath.pop();
+            hops++;
         }
+
+        std::cout << std::endl;
+        std::cout << "Total hops " << hops << std::endl;
+        std::cout << "Total nodes popped " << nodesPopped << std::endl;
+        std::cout << "Total cost " << totalCost << std::endl;
     }
 
 
@@ -131,7 +140,9 @@ public:
         int index = targetNode;
         while (index != startNode)
         {
-            totalCost += data[parent[index]][index];
+            if(index == startNode)
+                break;
+            //totalCost += data[parent[index]][index];
             finalPath.push(parent[index]);
             index = parent[index];
             //totalCost += cost[index];
@@ -144,7 +155,6 @@ public:
         while (!finalPath.empty())
         {
             std::cout << finalPath.top() << " ";
-            //myList.push_back(finalPath.top());
             finalPath.pop();
         }
 
@@ -177,16 +187,22 @@ private:
 
 int main(){
     int dim;
-    int search =2;
+    int start;
+    int search;
     std::cout << "Enter Dimension: ";
     std::cin >> dim;
+    std::cout << "Enter start node: ";
+    std::cin >> start;
+    std::cout << "Enter destination: ";
+    std::cin >> search;
     graph g(dim);
-    //std::cout << "Enter Destination: ";
-    //std::cin >> search;
 
     g.displayGraph();
-    //g.DFS(11,search);
-    g.BFS(10,search);
+    std::cout << "----------------------------\n";
+    g.DFS(start,search);
+    std::cout << "\n----------------------------\n";
+    g.BFS(start,search);
+    std::cout << "----------------------------\n";
 
 
 }
